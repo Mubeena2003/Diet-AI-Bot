@@ -27,9 +27,9 @@ Welcome to the **Diet AI Chatbot** – a smart, interactive web-based chatbot th
 
 ## 📸 Screenshots
 
-| Home UI | Chat Interface |
-|--------|----------------|
-| ![screenshot1](link-to-image1) | ![screenshot2](link-to-image2) |
+Chat Interface |
+
+![Image](https://github.com/user-attachments/assets/efd77217-48b6-4d2a-8e81-2c36c56d39ea)
 
 > Replace with your own screenshots.
 
