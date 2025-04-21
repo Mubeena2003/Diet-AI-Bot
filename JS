@@ -1,0 +1,182 @@
+const chatBox = document.getElementById("chatBox");
+const userInput = document.getElementById("userInput");
+
+let step = 0;
+let userData = {
+    height: null,
+    weight: null,
+    goal: null,
+    gender: null,
+    workoutType: null
+};
+
+function sendMessage() {
+    const input = userInput.value.trim();
+    if (!input) return;
+
+    addMessage("You", input);
+    handleUserInput(input.toLowerCase());
+    userInput.value = "";
+}
+
+function addMessage(sender, message, fancy = false) {
+    const msg = document.createElement("div");
+    msg.classList.add("message");
+
+    if (sender === "Bot") {
+        msg.classList.add("bot");
+        if (fancy) {
+            simulateTyping(message, msg);
+        } else {
+            msg.innerHTML = `<strong>💬 ${sender}:</strong> ${message}`;
+            chatBox.appendChild(msg);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+    } else {
+        msg.innerHTML = `<strong>🙋‍♀️ ${sender}:</strong> ${message}`;
+        msg.classList.add("user");
+        chatBox.appendChild(msg);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+}
+
+// Fancy typing effect
+function simulateTyping(text, container) {
+    let index = 0;
+    container.innerHTML = `<strong>💬 Bot:</strong> `;
+    chatBox.appendChild(container);
+
+    const typingInterval = setInterval(() => {
+        if (index < text.length) {
+            container.innerHTML += text.charAt(index);
+            chatBox.scrollTop = chatBox.scrollHeight;
+            index++;
+        } else {
+            clearInterval(typingInterval);
+        }
+    }, 30);
+}
+
+function handleUserInput(input) {
+    switch (step) {
+        case 0:
+            addMessage("Bot", "👋 Hello! I'm your personal Diet AI Bot. Let’s create your personalized plan! 💪\nWhat’s your height in cm?", true);
+            step++;
+            break;
+        case 1:
+            userData.height = parseFloat(input);
+            if (isNaN(userData.height)) {
+                addMessage("Bot", "❌ Oops! Please enter a valid number for height.", true);
+            } else {
+                addMessage("Bot", "✅ Got it! Now, what’s your weight in kg?", true);
+                step++;
+            }
+            break;
+        case 2:
+            userData.weight = parseFloat(input);
+            if (isNaN(userData.weight)) {
+                addMessage("Bot", "❌ That doesn’t look like a valid weight. Please try again.", true);
+            } else {
+                addMessage("Bot", "⚡ Awesome! What’s your goal? Type: `weight loss`, `muscle gain`, or `fitness`", true);
+                step++;
+            }
+            break;
+        case 3:
+            if (["weight loss", "muscle gain", "fitness"].includes(input)) {
+                userData.goal = input;
+                addMessage("Bot", "💬 Please tell me your gender (male or female).", true);
+                step++;
+            } else {
+                addMessage("Bot", "🤔 Please choose from: weight loss , muscle gain, or fitness !", true);
+            }
+            break;
+        case 4:
+            if (input === "male" || input === "female") {
+                userData.gender = input;
+                askMeals();
+            } else {
+                addMessage("Bot", "❌ Please specify a valid gender (male or female).", true);
+            }
+            break;
+        case 5:
+            askExerciseType();
+            break;
+        case 6:
+            userData.workoutType = input;
+            if (input === "soft" || input === "hard") {
+                provideExerciseDetails(input);
+            } else {
+                addMessage("Bot", "❌ Please choose either soft or hard workout.", true);
+            }
+            break;
+        default:
+            addMessage("Bot", "🔁 Want to restart? Refresh the page to begin again. 🚀", true);
+    }
+}
+
+function askMeals() {
+    addMessage("Bot", `
+✨ Here’s your custom meal plan for ${userData.goal.toUpperCase()}:
+
+🍽 Meal:
+1. Balanced plate with carbs, protein, and veggies.
+2. Aim for 3 main meals + 2 snacks throughout the day.
+
+Tip: Portion control is key for better results. Make sure to drink enough water with every meal!
+
+Please type 'NEXT' to continue to the exercise plan.
+  `, true);
+    step++;
+}
+
+function askExerciseType() {
+    addMessage("Bot", "💪 Now, let's move on to the exercise part. Would you prefer a soft workout (light) or hard workout (intense)?", true);
+    step++;
+}
+
+function provideExerciseDetails(workoutType) {
+    const {
+        gender
+    } = userData;
+    let exercisePlan = "";
+
+    if (workoutType === "soft") {
+        if (gender === "male") {
+            // Soft workout plan for male can go here...
+        } else if (gender === "female") {
+            exercisePlan = `
+🏋️‍♀️ Soft Workout for Female:
+
+1. Cardio : Light jogging or brisk walking for 20 minutes.
+2. Pilates : Beginner-level exercises for 15 minutes.
+3. Stretching: Full body stretches for 10 minutes.
+
+Tip : Focus on flexibility and core strength. Gradually increase the time or difficulty as you progress.
+      `;
+        }
+    } else if (workoutType === "hard") {
+        if (gender === "male") {
+            exercisePlan = `
+🏋️‍♂️  Hard Workout for Male:
+
+1. Strength Training : Weight lifting for 30 minutes (focus on compound movements like squats, deadlifts).
+2. HIIT (High-Intensity Interval Training): 20 minutes of intense intervals (e.g., burpees, jumping jacks, mountain climbers).
+3. Core Workout : Planks and leg raises for 10 minutes.
+
+Tip: Challenge yourself by increasing weights and intensity. Proper rest is important for recovery.
+      `;
+        } else if (gender === "female") {
+            exercisePlan = `
+🏋️‍♀️ Hard Workout for Female:
+
+1. Strength Training: Weight lifting for 30 minutes (focus on squats, lunges, and deadlifts).
+2. HIIT: 20 minutes of high-intensity intervals (e.g., high knees, jump squats, burpees).
+3. Core Workout: Planks, Russian twists, and leg raises for 10 minutes.
+
+Tip: Focus on progressive overload to see results. Ensure proper form to avoid injury.
+      `;
+        }
+    }
+
+    addMessage("Bot", exercisePlan, true);
+}
