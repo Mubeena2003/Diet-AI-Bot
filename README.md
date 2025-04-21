@@ -27,20 +27,9 @@ Welcome to the **Diet AI Chatbot** – a smart, interactive web-based chatbot th
 
 ## 📸 Screenshots
 
-Chat Interface |
+Chat Interface 
 
 ![Image](https://github.com/user-attachments/assets/efd77217-48b6-4d2a-8e81-2c36c56d39ea)
 
-> Replace with your own screenshots.
-
 ---
 
-## 🚀 Getting Started
-
-To run this project locally:
-
-```bash
-1. Clone the repo
-   git clone https://github.com/your-username/diet-ai-chatbot.git
-
-2. Open `index.html` in your browser
