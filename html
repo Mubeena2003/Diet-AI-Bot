@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diet AI Chatbot</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Header Section -->
+    <header class="header">
+        <div class="header-title">
+            <h1>🥗 Diet AI Chatbot</h1>
+            <p>Your personalized health & fitness assistant 💪</p>
+        </div>
+    </header>
+
+
+    <!-- Chat Interface -->
+    <div class="chat-container">
+        <div id="chatBox"></div>
+        <input type="text" id="userInput" placeholder="Type your message here..." onkeydown="if(event.key === 'Enter'){sendMessage()}">
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
